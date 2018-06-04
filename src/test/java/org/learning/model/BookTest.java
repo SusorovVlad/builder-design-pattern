@@ -1,7 +1,9 @@
 package org.learning.model;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class BookTest {
 
@@ -18,8 +20,35 @@ public class BookTest {
                 .withDescription(DESCRIPTION)
                 .withIsbn(ISBN));
 
-        Assertions.assertThat(lostTime).hasFieldOrPropertyWithValue("title", TITLE)
+        assertThat(lostTime).hasFieldOrPropertyWithValue("title", TITLE)
                 .hasFieldOrPropertyWithValue("description", DESCRIPTION)
                 .hasFieldOrPropertyWithValue("isbn", ISBN);
+    }
+
+    @Test
+    public void exceptionThrownWhenTitleIsNull() {
+        assertThatThrownBy(() -> Book.create(builder -> builder.withTitle(null)
+                .withDescription(DESCRIPTION)
+                .withIsbn(ISBN)))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("Title cannot be null.");
+    }
+
+    @Test
+    public void exceptionThrownWhenDescriptionIsNull() {
+        assertThatThrownBy(() -> Book.create(builder -> builder.withTitle(TITLE)
+                .withDescription(null)
+                .withIsbn(ISBN)))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("Description cannot be null.");
+    }
+
+    @Test
+    public void exceptionThrownWhenIsbnIsNull() {
+        assertThatThrownBy(() -> Book.create(builder -> builder.withTitle(TITLE)
+                .withDescription(DESCRIPTION)
+                .withIsbn(null)))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("Isbn cannot be null.");
     }
 }
