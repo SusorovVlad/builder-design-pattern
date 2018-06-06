@@ -45,7 +45,7 @@ public final class Book {
             return this;
         }
 
-        public Book build() {
+        private Book build() {
             return new Book(this);
         }
     }
